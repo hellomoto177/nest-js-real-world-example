@@ -12,14 +12,14 @@ jobs:
           POSTGRES_PORT: 5442
     steps: 
       - checkout 
-      # - run:
-      #   name: Setup Environment Variables
-      #   command: |
-      #     echo 'export TEST_DB_USER="user" >> $BASH_ENV
-      #     echo 'export TEST_DB_PASSWORD="password" >> $BASH_ENV
-      #     echo 'export TEST_DB_NAME="english_test" >> $BASH_ENV
-      #     echo 'export TEST_DB_HOST="localhost" >> $BASH_ENV
-      #     echo 'export TEST_DB_PORT="5442" >> $BASH_ENV
+      - run:
+          name: Setup Environment Variables
+          command: |
+            echo 'export TEST_DB_USER="user" >> $BASH_ENV
+            echo 'export TEST_DB_PASSWORD="password" >> $BASH_ENV
+            echo 'export TEST_DB_NAME="english_test" >> $BASH_ENV
+            echo 'export TEST_DB_HOST="localhost" >> $BASH_ENV
+            echo 'export TEST_DB_PORT="5442" >> $BASH_ENV
       - run:
           name: install-dependencies
           command: npm install
