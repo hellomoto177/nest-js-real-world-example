@@ -28,6 +28,9 @@ jobs:
       #     paths:
       #       - ./node_modules
       - run: # run tests
+          name: envs
+          command: ENV | grep DB
+      - run: # run tests
           name: test
           command: npm run test
       # - run: # run coverage report
