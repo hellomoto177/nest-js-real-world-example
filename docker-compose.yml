@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: english
+
+  db_test:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5442:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: english_test
