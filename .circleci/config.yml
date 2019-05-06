@@ -27,12 +27,15 @@ jobs:
       #     key: dependency-cache-{{ checksum "package.json" }}
       #     paths:
       #       - ./node_modules
-      - run: # run tests
-          name: envs
-          command: ENV | grep DB
-      - run: # run tests
+      - run:
           name: test
-          command: npm run test
+          command: |
+            echo 'export TEST_DB_USER="user"' >> $BASH_ENV
+            echo 'export TEST_DB_PASSWORD="password"' >> $BASH_ENV
+            echo 'export TEST_DB_NAME="english_test"' >> $BASH_ENV
+            echo 'export TEST_DB_HOST="localhost"' >> $BASH_ENV
+            echo 'export TEST_DB_PORT="5442"' >> $BASH_ENV
+            npm run test
       # - run: # run coverage report
       #     name: code-coverage
       #     command: './node_modules/.bin/nyc report --reporter=text-lcov'
