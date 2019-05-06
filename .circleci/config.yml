@@ -1,13 +1,18 @@
-version: 2 # use CircleCI 2.0
-jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
-    working_directory: ~/app # directory where steps will run
-    docker: # run the steps with Docker
-      - image: node:12.1.0-alpine # ...with this image as the primary container; this is where all `steps` will run
-      - image: postgres:latest # and this image as the secondary service container
-    steps: # a collection of executable commands
-      - checkout # special step to check out source code to working directory
-      # - run:
+version: 2
+jobs:
+  build:
+    working_directory: ~/app
+    docker:
+      - image: node:12.1.0-alpine
+      - image: postgres:latest 
+        environment:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: english_test
+          POSTGRES_PORT: 5442
+    steps: 
+      - checkout 
+      
       #     name: update-npm
       #     command: 'sudo npm install -g npm@latest'
       # - restore_cache: # special step to restore the dependency cache
