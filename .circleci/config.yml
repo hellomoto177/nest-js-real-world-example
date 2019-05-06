@@ -21,12 +21,15 @@ jobs:
             echo 'export TEST_DB_HOST="localhost"' >> $BASH_ENV
             echo 'export TEST_DB_PORT="5442"' >> $BASH_ENV
       - run:
-          name: install-dependencies
+          name: Install dependencies
           command: npm install
       # - save_cache: # special step to save the dependency cache
       #     key: dependency-cache-{{ checksum "package.json" }}
       #     paths:
       #       - ./node_modules
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5442 -timeout 1m
       - run:
           name: test
           command: |
