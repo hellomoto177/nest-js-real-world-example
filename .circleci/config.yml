@@ -19,6 +19,14 @@ jobs:
       #     # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       #     key: dependency-cache-{{ checksum "package.json" }}
       - run:
+        name: Setup Environment Variables
+        command: |
+          echo 'export TEST_DB_USER="user" >> $BASH_ENV
+          echo 'export TEST_DB_PASSWORD="password" >> $BASH_ENV
+          echo 'export TEST_DB_NAME="english_test" >> $BASH_ENV
+          echo 'export TEST_DB_HOST="localhost" >> $BASH_ENV
+          echo 'export TEST_DB_PORT="5442" >> $BASH_ENV
+      - run:
           name: install-dependencies
           command: npm install
       # - save_cache: # special step to save the dependency cache
@@ -28,17 +36,6 @@ jobs:
       - run: # run tests
           name: test
           command: npm run test
-          environment:
-            TEST_DB_USER: user
-            TEST_DB_PASSWORD: password
-            TEST_DB_NAME: english_test
-            TEST_DB_HOST: localhost
-            TEST_DB_PORT: 5442
-            DB_USER: user
-            DB_PASSWORD: password
-            DB_NAME: english
-            DB_HOST: localhost
-            DB_PORT: 5432
       # - run: # run coverage report
       #     name: code-coverage
       #     command: './node_modules/.bin/nyc report --reporter=text-lcov'
