@@ -1,7 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AppModule } from '../app.module';
-import { INestApplication, HttpStatus, ValidationPipe } from '@nestjs/common';
+import { INestApplication, HttpStatus } from '@nestjs/common';
 import TestUtils from './utils';
 import { Feedback } from '../modules/feedback/feedback.entity';
 
@@ -12,7 +10,7 @@ describe('Feedback API', () => {
     await TestUtils.dropDatabase();
     await TestUtils.loadFixtures([Feedback]);
 
-    app = await TestUtils.startApplication();
+    app = await TestUtils.createApp();
     done();
   });
 
