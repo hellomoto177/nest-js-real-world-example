@@ -8,7 +8,7 @@ import { Feedback } from '../modules/feedback/feedback.entity';
 describe('Feedback API', () => {
   let app: INestApplication;
 
-  beforeEach(async done => {
+  beforeAll(async done => {
     await TestUtils.dropDatabase();
     await TestUtils.loadFixtures([Feedback]);
 
@@ -16,7 +16,7 @@ describe('Feedback API', () => {
     done();
   });
 
-  afterEach(async done => {
+  afterAll(async done => {
     await app.close();
     done();
   });
