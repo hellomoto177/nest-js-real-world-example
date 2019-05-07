@@ -14,7 +14,7 @@ export default class TestUtils {
     const app = await module.createNestApplication();
     await app.useGlobalPipes(new ValidationPipe()).init();
 
-    return app.getHttpServer();
+    return app;
   }
 
   static async dropDatabase() {
