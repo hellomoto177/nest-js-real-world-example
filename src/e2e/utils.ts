@@ -28,9 +28,8 @@ export default class TestUtils {
    */
   static async loadFixtures(entities: any[]) {
     try {
+      const connection = await createConnection();
       for (const entity of entities.sort((a, b) => a.order - b.order)) {
-        const connection = await createConnection();
-
         const repository = await connection.getRepository(entity.name);
         const fixtureFile = path.join(
           __dirname,
@@ -45,8 +44,8 @@ export default class TestUtils {
             .values(items)
             .execute();
         }
-        connection.close();
       }
+      connection.close();
     } catch (error) {
       throw new Error(
         `ERROR [TestUtils.loadFixtures()]: Loading fixtures on test db: ${error}`,
