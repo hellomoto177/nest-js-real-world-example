@@ -11,6 +11,7 @@ const databaseOpts = {
   entities: [__dirname + '/src/**/*.entity{.ts,.js}'],
   migrationsRun: isTestEnv,
   migrations: [__dirname + '/src/migrations/*.ts'],
+  keepConnectionAlive: true,
   synchronize: false,
 };
 
