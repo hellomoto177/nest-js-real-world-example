@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: english
+      POSTGRES_DB: notes
 
   db_testing:
     container_name: nest_db_testing
@@ -21,4 +21,4 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: english_test
+      POSTGRES_DB: notes_test
