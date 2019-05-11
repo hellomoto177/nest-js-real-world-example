@@ -98,12 +98,34 @@ describe('Group API', () => {
     });
   });
 
-  // describe('update notes', () => {
-  //   it('should successfully update specific note', async () => {});
-  // });
+  describe('update notes', () => {
+    it('should successfully update specific note', async () => {
+      const dto = {
+        id: 1,
+        title: 'Brand new title',
+      };
 
-  // describe('delete groups', () => {
-  //   it('should successfully delete specific note', async () => {});
-  //   it('should delete undefined group without errors', async () => {});
-  // });
+      return request(app.getHttpServer())
+        .patch(`/notes/${dto.id}`)
+        .send({ title: dto.title })
+        .expect(HttpStatus.OK)
+        .expect(({ body }) => {
+          expect(body.id).toEqual(dto.id);
+          expect(body.title).toEqual(dto.title);
+        });
+    });
+  });
+
+  describe('delete groups', () => {
+    it('should successfully delete specific note', async () => {
+      return request(app.getHttpServer())
+        .delete('/notes/1')
+        .expect(HttpStatus.OK);
+    });
+    it('should delete undefined note without errors', async () => {
+      return request(app.getHttpServer())
+        .delete('/notes/99')
+        .expect(HttpStatus.OK);
+    });
+  });
 });
