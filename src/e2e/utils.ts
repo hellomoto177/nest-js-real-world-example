@@ -54,7 +54,7 @@ export default class TestingTools {
 
         if (fs.existsSync(fixtureFile)) {
           const items = JSON.parse(fs.readFileSync(fixtureFile, 'utf8'));
-          const result = await repository
+          await repository
             .createQueryBuilder(entity.name)
             .insert()
             .values(items)

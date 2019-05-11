@@ -1,11 +1,10 @@
 import * as request from 'supertest';
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import testingTools from './utils';
-import Group from '../modules/group/group.entity';
-import CreateGroupDTO from '../modules/group/dto/create-group-dto';
-import UpdateGroupDTO from 'src/modules/group/dto/update-group-dto';
+import { Group } from '../modules/group/group.entity';
+import CreateGroupDTO from '../modules/group/dto/create-group.dto';
 
-describe('Group api', () => {
+describe('Group API', () => {
   let app: INestApplication;
 
   beforeAll(async done => {
@@ -27,7 +26,7 @@ describe('Group api', () => {
         .get('/group')
         .expect(200)
         .expect(({ body }) => {
-          expect(body).toHaveLength(1);
+          expect(body).toHaveLength(3);
           expect(body[0].title).toEqual('Standart Notes');
         });
     });
@@ -89,7 +88,7 @@ describe('Group api', () => {
   });
 
   describe('update groups', () => {
-    it('should successfilly update specific group', async () => {
+    it('should successfully update specific group', async () => {
       const target = {
         id: 1,
         title: 'Brand new title',
@@ -117,7 +116,7 @@ describe('Group api', () => {
   });
 
   describe('delete groups', () => {
-    it('should successfilly delete specific group', async () => {
+    it('should successfully delete specific group', async () => {
       return request(app.getHttpServer())
         .delete('/group/1')
         .expect(HttpStatus.OK)

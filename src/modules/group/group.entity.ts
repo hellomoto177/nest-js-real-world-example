@@ -9,7 +9,7 @@ import {
 import { Note } from '../note/note.entity';
 
 @Entity({ name: 'groups' })
-export default class Group {
+export class Group {
   @PrimaryGeneratedColumn()
   id: number;
 

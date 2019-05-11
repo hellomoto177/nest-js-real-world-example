@@ -1,16 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import Group from '../group/group.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Group } from '../group/group.entity';
 
 @Entity({ name: 'notes' })
 export class Note {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   title: string;
 
-  @Column()
+  @Column({ nullable: true })
   content: string;
+
+  @Column()
+  groupId: number;
 
   @ManyToOne(type => Group, group => group.notes)
   group: Group;

@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import Group from '../group/group.entity';
+import { NoteController } from './note.controller';
+import { NoteService } from './note.service';
+import { Note } from './note.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Group])],
+  imports: [TypeOrmModule.forFeature([Note])],
+  controllers: [NoteController],
+  providers: [NoteService],
 })
 export class NoteModule {}

@@ -3,15 +3,13 @@ import {
   Get,
   Post,
   Body,
-  UsePipes,
-  ValidationPipe,
   Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
-import CreateGroupDTO from './dto/create-group-dto';
-import UpdateGroupDTO from './dto/update-group-dto';
+import CreateGroupDTO from './dto/create-group.dto';
+import UpdateGroupDTO from './dto/update-group.dto';
 
 @Controller('group')
 export class GroupController {

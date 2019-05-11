@@ -1,9 +1,9 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import Group from './group.entity';
+import { Group } from './group.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import CreateGroupDTO from './dto/create-group-dto';
-import UpdateGroupDTO from './dto/update-group-dto';
+import CreateGroupDTO from './dto/create-group.dto';
+import UpdateGroupDTO from './dto/update-group.dto';
 
 @Injectable()
 export class GroupService {
