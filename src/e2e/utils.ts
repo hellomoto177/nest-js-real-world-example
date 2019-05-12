@@ -1,4 +1,4 @@
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
 import { TestingModule, Test } from '@nestjs/testing';
@@ -45,20 +45,33 @@ export default class TestingTools {
   static async loadFixtures(entities: any[]) {
     const connection = await createConnection();
     try {
-      for (const entity of entities.sort((a, b) => a.order - b.order)) {
-        const repository = await connection.getRepository(entity.name);
+      for (const entity of entities) {
         const fixtureFile = path.join(
           __dirname,
           `/fixtures/${entity.name}.json`,
         );
-
-        if (fs.existsSync(fixtureFile)) {
+        if (entity.name.includes('Relation')) {
           const items = JSON.parse(fs.readFileSync(fixtureFile, 'utf8'));
-          await repository
-            .createQueryBuilder(entity.name)
-            .insert()
-            .values(items)
-            .execute();
+          const promises = items.map((rel: any) => {
+            const entityName = entity.name.split('-')[0];
+            const relationName = entity.name.split('-')[1].toLowerCase();
+            return connection
+              .createQueryBuilder()
+              .relation(entityName, relationName)
+              .of(rel.source)
+              .add(rel.target);
+          });
+          await Promise.all(promises);
+        } else {
+          const repository = await connection.getRepository(entity.name);
+          if (fs.existsSync(fixtureFile)) {
+            const items = JSON.parse(fs.readFileSync(fixtureFile, 'utf8'));
+            await repository
+              .createQueryBuilder(entity.name)
+              .insert()
+              .values(items)
+              .execute();
+          }
         }
       }
       await connection.close();

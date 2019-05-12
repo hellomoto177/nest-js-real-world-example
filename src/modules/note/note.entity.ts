@@ -5,8 +5,11 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Group } from '../group/group.entity';
+import { Tag } from '../tag/tag.entity';
 
 @Entity({ name: 'notes' })
 export class Note {
@@ -24,6 +27,12 @@ export class Note {
 
   @ManyToOne(type => Group, group => group.notes)
   group: Group;
+
+  @ManyToMany(type => Tag, tag => tag.notes)
+  @JoinTable({
+    name: 'tags_notes',
+  })
+  tags: Tag[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
