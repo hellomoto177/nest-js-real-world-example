@@ -3,9 +3,8 @@ import { INestApplication, HttpStatus } from '@nestjs/common';
 import testingTools from './utils';
 import { Note } from '../modules/note/note.entity';
 import { Group } from '../modules/group/group.entity';
-import { CreateNoteDTO } from '../modules/note/dto/create-note.dto';
+import { CreateNoteDTO } from '../modules/note/note.dto';
 import { Tag } from '../modules/tag/tag.entity';
-import { executionAsyncId } from 'async_hooks';
 
 describe('Note API', () => {
   let app: INestApplication;
@@ -126,7 +125,7 @@ describe('Note API', () => {
       };
 
       return request(app.getHttpServer())
-        .patch(`/notes/${dto.id}`)
+        .put(`/notes/${dto.id}`)
         .send({ title: dto.title })
         .expect(HttpStatus.OK)
         .expect(({ body }) => {

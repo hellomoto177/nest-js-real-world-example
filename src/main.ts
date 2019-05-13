@@ -12,7 +12,6 @@ async function bootstrap() {
     .setTitle('NestJS Real world example')
     .setDescription('Application API description')
     .setVersion('1.0')
-    .addTag('real world example')
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

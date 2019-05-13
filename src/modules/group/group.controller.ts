@@ -8,11 +8,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
-import { ApiOperation, ApiOkResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiOkResponse, ApiUseTags } from '@nestjs/swagger';
 import { ResponseGroupDTO, CreateGroupDTO, UpdateGroupDTO } from './group.dto';
 import { DeleteResult } from 'typeorm';
 
 @Controller('group')
+@ApiUseTags('Group of notes')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
   @Get('/')

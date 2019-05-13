@@ -2,10 +2,10 @@ import { ApiModelPropertyOptional } from '@nestjs/swagger';
 
 export class BaseDTO {
   @ApiModelPropertyOptional({ type: String, format: 'date-time' })
-  createdAt?: Date;
+  createdAt: Date;
 
   @ApiModelPropertyOptional({ type: String, format: 'date-time' })
-  updatedAt?: Date;
+  updatedAt: Date;
 
-  @ApiModelPropertyOptional() id?: number;
+  @ApiModelPropertyOptional() id: number;
 }

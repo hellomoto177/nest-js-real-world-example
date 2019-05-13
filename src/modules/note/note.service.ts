@@ -2,10 +2,9 @@ import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Note } from './note.entity';
 import { Repository } from 'typeorm';
-import { CreateNoteDTO } from './dto/create-note.dto';
-import { UpdateNoteDTO } from './dto/update-note.dto';
 import { CreateTagDTO } from '../tag/dto/create-tag.dto';
 import { Tag } from '../tag/tag.entity';
+import { CreateNoteDTO, UpdateNoteDTO } from './note.dto';
 
 @Injectable()
 export class NoteService {
