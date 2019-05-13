@@ -12,13 +12,15 @@ import { NoteService } from './note.service';
 import { CreateNoteDTO } from './dto/create-note.dto';
 import { UpdateNoteDTO } from './dto/update-note.dto';
 import { CreateTagDTO } from '../tag/dto/create-tag.dto';
+import { ApiImplicitQuery } from '@nestjs/swagger';
 
 @Controller('notes')
 export class NoteController {
   constructor(private readonly noteService: NoteService) {}
 
   @Get('/')
-  index(@Query('expand') expand: string) {
+  @ApiImplicitQuery({ name: 'expand', required: false })
+  index(@Query('expand') expand?: string) {
     const expands = expand ? expand.split(',') : [];
     return this.noteService.getAllNotes(expands);
   }

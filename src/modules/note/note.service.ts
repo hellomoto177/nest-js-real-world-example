@@ -16,7 +16,7 @@ export class NoteService {
     private readonly tagRepository: Repository<Tag>,
   ) {}
 
-  async getAllNotes(expand: string[]) {
+  async getAllNotes(expand?: string[]) {
     return await this.noteRepository.find({
       relations: [...expand],
     });

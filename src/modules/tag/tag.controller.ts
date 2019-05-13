@@ -17,7 +17,7 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get('/')
-  index(@Query('expand') expand: string) {
+  index(@Query('expand') expand?: string) {
     const expands = expand ? expand.split(',') : [];
     return this.tagService.getAllTags(expands);
   }

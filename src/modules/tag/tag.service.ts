@@ -11,7 +11,7 @@ export class TagService {
     @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
   ) {}
 
-  async getAllTags(expand: string[]) {
+  async getAllTags(expand?: string[]) {
     return await this.tagRepository.find({ relations: [...expand] });
   }
 

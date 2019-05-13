@@ -10,6 +10,11 @@ import {
 import { GroupService } from './group.service';
 import CreateGroupDTO from './dto/create-group.dto';
 import UpdateGroupDTO from './dto/update-group.dto';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiResponseModelProperty,
+} from '@nestjs/swagger';
 
 @Controller('group')
 export class GroupController {
@@ -25,6 +30,12 @@ export class GroupController {
   }
 
   @Post('/')
+  @ApiOperation({ title: 'Create group' })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   createGroup(@Body() group: CreateGroupDTO) {
     return this.groupService.createGroup(group);
   }
