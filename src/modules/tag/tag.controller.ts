@@ -4,41 +4,63 @@ import {
   Param,
   Post,
   Body,
-  Patch,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { TagService } from './tag.service';
-import { CreateTagDTO } from './dto/create-tag.dto';
-import { UpdateTagDTO } from './dto/update-tag.dto';
+import {
+  ApiUseTags,
+  ApiOkResponse,
+  ApiOperation,
+  ApiImplicitQuery,
+} from '@nestjs/swagger';
+import { ResponseTagDTO, CreateTagDTO, UpdateTagDTO } from './tag.dto';
+import { DeleteResult } from 'typeorm';
 
 @Controller('tags')
+@ApiUseTags('Tags')
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get('/')
-  index(@Query('expand') expand?: string) {
+  @ApiOkResponse({ type: ResponseTagDTO, isArray: true })
+  @ApiOperation({ title: 'Get all tags' })
+  @ApiImplicitQuery({ name: 'expand', required: false })
+  index(@Query('expand') expand?: string): Promise<ResponseTagDTO[]> {
     const expands = expand ? expand.split(',') : [];
     return this.tagService.getAllTags(expands);
   }
 
   @Get('/:id')
+  @ApiOkResponse({ type: ResponseTagDTO })
+  @ApiOperation({ title: 'Get tag by id' })
   getTag(@Param('id') id: number) {
     return this.tagService.getTag(id);
   }
 
+  // TODO: Херню отдает в свагер
   @Post('/')
-  createTag(@Body() dto: CreateTagDTO) {
+  @ApiOkResponse({ type: CreateTagDTO })
+  @ApiOperation({ title: 'Create new tag' })
+  createTag(@Body() dto: CreateTagDTO): Promise<ResponseTagDTO> {
     return this.tagService.createTag(dto);
   }
 
-  @Patch('/:id')
-  updateTag(@Param('id') id: number, @Body() dto: UpdateTagDTO) {
+  @Put('/:id')
+  @ApiOkResponse({ type: UpdateTagDTO })
+  @ApiOperation({ title: 'Update new tag' })
+  updateTag(
+    @Param('id') id: number,
+    @Body() dto: UpdateTagDTO,
+  ): Promise<ResponseTagDTO> {
     return this.tagService.updateTag(id, dto);
   }
 
   @Delete('/:id')
-  deleteTag(@Param('id') id: number) {
+  @ApiOkResponse({ type: DeleteResult })
+  @ApiOperation({ title: 'Delete tag by id' })
+  deleteTag(@Param('id') id: number): Promise<DeleteResult> {
     return this.tagService.deleteTag(id);
   }
 }

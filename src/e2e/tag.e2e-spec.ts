@@ -4,7 +4,7 @@ import testingTools from './utils';
 import { Note } from '../modules/note/note.entity';
 import { Group } from '../modules/group/group.entity';
 import { Tag } from '../modules/tag/tag.entity';
-import { CreateTagDTO } from '../modules/tag/dto/create-tag.dto';
+import { CreateTagDTO } from 'src/modules/tag/tag.dto';
 
 describe('Tag API', () => {
   let app: INestApplication;
@@ -98,7 +98,7 @@ describe('Tag API', () => {
       };
 
       return request(app.getHttpServer())
-        .patch(`/tags/${dto.id}`)
+        .put(`/tags/${dto.id}`)
         .send({ name: dto.name })
         .expect(HttpStatus.OK);
     });

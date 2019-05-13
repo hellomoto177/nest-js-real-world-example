@@ -9,7 +9,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { NoteService } from './note.service';
-import { CreateTagDTO } from '../tag/dto/create-tag.dto';
 import {
   ApiImplicitQuery,
   ApiUseTags,
@@ -18,6 +17,7 @@ import {
 } from '@nestjs/swagger';
 import { CreateNoteDTO, UpdateNoteDTO, ResponseNoteDTO } from './note.dto';
 import { DeleteResult } from 'typeorm';
+import { CreateTagDTO } from '../tag/tag.dto';
 
 @Controller('notes')
 @ApiUseTags('Notes')
@@ -47,18 +47,23 @@ export class NoteController {
     return this.noteService.createNote(dto);
   }
 
-  // TODO: add return value when tag dto will created
-  // TODO: add api ok response
   @Post('/:id/tag')
+  @ApiOkResponse({ type: ResponseNoteDTO })
   @ApiOperation({ title: 'Add tag to note' })
-  addTag(@Param('id') id: number, @Body() dto: CreateTagDTO) {
+  addTag(
+    @Param('id') id: number,
+    @Body() dto: CreateTagDTO,
+  ): Promise<ResponseNoteDTO> {
     return this.noteService.addTag(id, dto);
   }
 
   @Delete('/:id/tag')
-  @ApiOkResponse({ type: DeleteResult })
+  @ApiOkResponse({ type: ResponseNoteDTO })
   @ApiOperation({ title: 'Delete tag from note' })
-  deleteTag(@Param('id') id: number, @Body() dto: CreateTagDTO) {
+  deleteTag(
+    @Param('id') id: number,
+    @Body() dto: CreateTagDTO,
+  ): Promise<ResponseNoteDTO> {
     return this.noteService.deleteTag(id, dto);
   }
 
