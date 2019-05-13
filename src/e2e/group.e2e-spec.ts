@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import testingTools from './utils';
 import { Group } from '../modules/group/group.entity';
-import CreateGroupDTO from '../modules/group/dto/create-group.dto';
+import { CreateGroupDTO } from '../modules/group/group.dto';
 
 describe('Group API', () => {
   let app: INestApplication;
@@ -95,7 +95,7 @@ describe('Group API', () => {
       };
 
       return request(app.getHttpServer())
-        .patch(`/group/${target.id}`)
+        .put(`/group/${target.id}`)
         .send({ title: target.title })
         .expect(HttpStatus.OK)
         .expect(({ body }) => {
@@ -106,7 +106,7 @@ describe('Group API', () => {
 
     it('should not update undefined group', async () => {
       return request(app.getHttpServer())
-        .patch('/group/99')
+        .put('/group/99')
         .send({ title: 'You shall not pass' })
         .expect(HttpStatus.BAD_REQUEST)
         .expect(({ body }) => {

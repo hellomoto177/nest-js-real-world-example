@@ -3,53 +3,53 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
-import CreateGroupDTO from './dto/create-group.dto';
-import UpdateGroupDTO from './dto/update-group.dto';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiResponseModelProperty,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiOkResponse } from '@nestjs/swagger';
+import { ResponseGroupDTO, CreateGroupDTO, UpdateGroupDTO } from './group.dto';
+import { DeleteResult } from 'typeorm';
 
 @Controller('group')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
   @Get('/')
-  index() {
+  @ApiOkResponse({ type: ResponseGroupDTO, isArray: true })
+  @ApiOperation({ title: 'Get all groups' })
+  index(): Promise<ResponseGroupDTO[]> {
     return this.groupService.findAllGroups();
   }
 
   @Get('/:id')
-  getGroup(id: number) {
+  @ApiOkResponse({ type: ResponseGroupDTO })
+  @ApiOperation({ title: 'Get group by id' })
+  getGroup(id: number): Promise<ResponseGroupDTO> {
     return this.groupService.findGroup(id);
   }
 
   @Post('/')
-  @ApiOperation({ title: 'Create group' })
-  @ApiResponse({
-    status: 201,
-    description: 'The record has been successfully created.',
-  })
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
-  createGroup(@Body() group: CreateGroupDTO) {
+  @ApiOkResponse({ type: ResponseGroupDTO })
+  @ApiOperation({ title: 'Create new group' })
+  createGroup(@Body() group: CreateGroupDTO): Promise<ResponseGroupDTO> {
     return this.groupService.createGroup(group);
   }
 
-  @Patch('/:groupId')
+  @Put('/:groupId')
+  @ApiOkResponse({ type: ResponseGroupDTO })
+  @ApiOperation({ title: 'Update group by id' })
   updateGroup(
     @Param('groupId') groupId: number,
     @Body() group: UpdateGroupDTO,
-  ) {
+  ): Promise<ResponseGroupDTO> {
     return this.groupService.updateGroup(groupId, group);
   }
 
   @Delete('/:groupId')
-  deleteGroup(@Param('groupId') groupId: number) {
+  @ApiOkResponse({ type: DeleteResult })
+  @ApiOperation({ title: 'Delete group by id' })
+  deleteGroup(@Param('groupId') groupId: number): Promise<DeleteResult> {
     return this.groupService.deleteGroup(groupId);
   }
 }
