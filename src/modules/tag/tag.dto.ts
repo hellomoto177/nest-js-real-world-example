@@ -1,22 +1,27 @@
 import { IsDefined } from 'class-validator';
-import { ResponseNoteDTO } from '../note/note.dto';
 import { ApiModelProperty } from '@nestjs/swagger';
 
+// Swagger
+const sw = {
+  id: { type: Number, example: 1 },
+  name: { type: String, example: 'important' },
+};
+
 export class ResponseTagDTO {
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.id)
+  id: number;
+  @ApiModelProperty(sw.name)
   name: string;
-  @ApiModelProperty({ type: ResponseNoteDTO, isArray: true })
-  notes?: ResponseNoteDTO[];
 }
 
 export class CreateTagDTO {
   @IsDefined()
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.name)
   name: string;
 }
 
 export class UpdateTagDTO {
   @IsDefined()
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.name)
   name: string;
 }

@@ -14,6 +14,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiImplicitQuery,
+  ApiCreatedResponse,
 } from '@nestjs/swagger';
 import { ResponseTagDTO, CreateTagDTO, UpdateTagDTO } from './tag.dto';
 import { DeleteResult } from 'typeorm';
@@ -41,7 +42,7 @@ export class TagController {
 
   // TODO: Херню отдает в свагер
   @Post('/')
-  @ApiOkResponse({ type: CreateTagDTO })
+  @ApiCreatedResponse({ type: CreateTagDTO })
   @ApiOperation({ title: 'Create new tag' })
   createTag(@Body() dto: CreateTagDTO): Promise<ResponseTagDTO> {
     return this.tagService.createTag(dto);

@@ -1,33 +1,46 @@
 import { IsDefined } from 'class-validator';
 import { BaseDTO } from '../../common/base.dto';
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ResponseTagDTO } from '../tag/tag.dto';
+import { ResponseGroupDTO } from '../group/group.dto';
+
+// Swagger
+const sw = {
+  title: { type: String, example: 'Shopping list' },
+  content: { type: String, example: '1. Beer; 2. Enough;' },
+  group: { type: Number, example: 1 },
+  tags: { type: ResponseTagDTO, isArray: true },
+  groups: { type: ResponseGroupDTO, isArray: true },
+};
 
 export class ResponseNoteDTO extends BaseDTO {
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.title)
   title: string;
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.content)
   content: string;
-  @ApiModelProperty({ type: Number })
+  @ApiModelProperty(sw.group)
   groupId: number;
-  tags?: any[];
-  notes?: any[];
+  @ApiModelPropertyOptional(sw.tags)
+  tags?: ResponseTagDTO[];
+  @ApiModelPropertyOptional(sw.groups)
+  groups?: ResponseGroupDTO[];
 }
 
 export class CreateNoteDTO {
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.title)
   title: string;
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.content)
   content: string;
   @IsDefined()
-  @ApiModelProperty({ type: Number })
+  @ApiModelProperty(sw.group)
   groupId: number;
 }
 
 export class UpdateNoteDTO {
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.title)
   title?: string;
-  @ApiModelProperty({ type: String })
+  @ApiModelProperty(sw.content)
   content?: string;
-  @ApiModelProperty({ type: Number })
+  @ApiModelProperty(sw.group)
   groupId?: number;
 }

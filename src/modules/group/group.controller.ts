@@ -8,7 +8,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
-import { ApiOperation, ApiOkResponse, ApiUseTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiOkResponse,
+  ApiUseTags,
+  ApiCreatedResponse,
+} from '@nestjs/swagger';
 import { ResponseGroupDTO, CreateGroupDTO, UpdateGroupDTO } from './group.dto';
 import { DeleteResult } from 'typeorm';
 
@@ -31,7 +36,7 @@ export class GroupController {
   }
 
   @Post('/')
-  @ApiOkResponse({ type: ResponseGroupDTO })
+  @ApiCreatedResponse({ type: ResponseGroupDTO })
   @ApiOperation({ title: 'Create new group' })
   createGroup(@Body() group: CreateGroupDTO): Promise<ResponseGroupDTO> {
     return this.groupService.createGroup(group);

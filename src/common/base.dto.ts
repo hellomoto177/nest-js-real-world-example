@@ -1,11 +1,18 @@
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 
+// Swagger
+const sw = {
+  date: { type: String, example: new Date(Date.now()).toLocaleString() },
+  id: { type: Number, example: 1 },
+};
+
 export class BaseDTO {
-  @ApiModelPropertyOptional({ type: String, format: 'date-time' })
+  @ApiModelPropertyOptional(sw.date)
   createdAt: Date;
 
-  @ApiModelPropertyOptional({ type: String, format: 'date-time' })
+  @ApiModelPropertyOptional(sw.date)
   updatedAt: Date;
 
-  @ApiModelPropertyOptional() id: number;
+  @ApiModelPropertyOptional(sw.id)
+  id: number;
 }

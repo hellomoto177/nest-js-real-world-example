@@ -14,6 +14,7 @@ import {
   ApiUseTags,
   ApiOkResponse,
   ApiOperation,
+  ApiCreatedResponse,
 } from '@nestjs/swagger';
 import { CreateNoteDTO, UpdateNoteDTO, ResponseNoteDTO } from './note.dto';
 import { DeleteResult } from 'typeorm';
@@ -41,14 +42,14 @@ export class NoteController {
   }
 
   @Post('/')
-  @ApiOkResponse({ type: ResponseNoteDTO })
+  @ApiCreatedResponse({ type: ResponseNoteDTO })
   @ApiOperation({ title: 'Create new note' })
   createNote(@Body() dto: CreateNoteDTO): Promise<ResponseNoteDTO> {
     return this.noteService.createNote(dto);
   }
 
   @Post('/:id/tag')
-  @ApiOkResponse({ type: ResponseNoteDTO })
+  @ApiCreatedResponse({ type: ResponseNoteDTO })
   @ApiOperation({ title: 'Add tag to note' })
   addTag(
     @Param('id') id: number,
