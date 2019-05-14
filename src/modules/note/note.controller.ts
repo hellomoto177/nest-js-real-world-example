@@ -28,7 +28,11 @@ export class NoteController {
   @Get('/')
   @ApiOkResponse({ type: ResponseNoteDTO, isArray: true })
   @ApiOperation({ title: 'Get all notes' })
-  @ApiImplicitQuery({ name: 'expand', required: false })
+  @ApiImplicitQuery({
+    name: 'expand',
+    enum: ['groups', 'tags'],
+    required: false,
+  })
   index(@Query('expand') expand?: string): Promise<ResponseNoteDTO[]> {
     const expands = expand ? expand.split(',') : [];
     return this.noteService.getAllNotes(expands);

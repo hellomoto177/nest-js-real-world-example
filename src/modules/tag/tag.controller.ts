@@ -27,7 +27,7 @@ export class TagController {
   @Get('/')
   @ApiOkResponse({ type: ResponseTagDTO, isArray: true })
   @ApiOperation({ title: 'Get all tags' })
-  @ApiImplicitQuery({ name: 'expand', required: false })
+  @ApiImplicitQuery({ name: 'expand', enum: ['groups'], required: false })
   index(@Query('expand') expand?: string): Promise<ResponseTagDTO[]> {
     const expands = expand ? expand.split(',') : [];
     return this.tagService.getAllTags(expands);
