@@ -40,7 +40,6 @@ export class TagController {
     return this.tagService.getTag(id);
   }
 
-  // TODO: Херню отдает в свагер
   @Post('/')
   @ApiCreatedResponse({ type: CreateTagDTO })
   @ApiOperation({ title: 'Create new tag' })

@@ -1,4 +1,4 @@
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
 import { TestingModule, Test } from '@nestjs/testing';
