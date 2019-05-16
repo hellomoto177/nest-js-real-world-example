@@ -6,6 +6,7 @@ import { GroupModule } from './modules/group/group.module';
 import { NoteModule } from './modules/note/note.module';
 import { TagModule } from './modules/tag/tag.module';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from './modules/user/user.module';
     NoteModule,
     TagModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

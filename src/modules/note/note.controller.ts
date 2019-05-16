@@ -7,6 +7,7 @@ import {
   Post,
   Delete,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { NoteService } from './note.service';
 import {
@@ -19,6 +20,7 @@ import {
 import { CreateNoteDTO, UpdateNoteDTO, ResponseNoteDTO } from './note.dto';
 import { DeleteResult } from 'typeorm';
 import { CreateTagDTO } from '../tag/tag.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('notes')
 @ApiUseTags('Notes')
@@ -26,6 +28,7 @@ export class NoteController {
   constructor(private readonly noteService: NoteService) {}
 
   @Get('/')
+  @UseGuards(AuthGuard())
   @ApiOkResponse({ type: ResponseNoteDTO, isArray: true })
   @ApiOperation({ title: 'Get all notes' })
   @ApiImplicitQuery({

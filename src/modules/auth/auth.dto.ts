@@ -7,23 +7,26 @@ export class ResponseAuthDTO extends BaseDTO {
   firstName: string;
   lastName: string;
 }
-
-export class CreateUserDTO {
+export class LoginDTO {
   @IsDefined()
   @IsEmail()
   email: string;
   @IsDefined()
-  @MinLength(8)
   password: string;
-  @IsDefined()
-  firstName: string;
-  @IsDefined()
-  lastName: string;
 }
 
-export class UpdateUserDTO {
-  email?: string;
-  password?: string;
-  firstName?: string;
-  lastName?: string;
+export class RegisterDTO {
+  @IsDefined()
+  @IsEmail()
+  email: string;
+
+  @IsDefined()
+  @MinLength(8)
+  password: string;
+
+  @IsDefined()
+  firstName: string;
+
+  @IsDefined()
+  lastName: string;
 }

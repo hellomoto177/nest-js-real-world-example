@@ -4,9 +4,11 @@ import { NoteController } from './note.controller';
 import { NoteService } from './note.service';
 import { Note } from './note.entity';
 import { TagModule } from '../tag/tag.module';
+import { PassportModule } from '@nestjs/passport';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Note]), TagModule],
+  imports: [AuthModule, TypeOrmModule.forFeature([Note]), TagModule],
   controllers: [NoteController],
   providers: [NoteService],
 })
