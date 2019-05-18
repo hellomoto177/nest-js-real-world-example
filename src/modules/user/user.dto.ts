@@ -1,9 +1,8 @@
 import { IsDefined, MinLength, IsEmail } from 'class-validator';
 import { BaseDTO } from '../../common/base.dto';
 
-export class ResponseAuthDTO extends BaseDTO {
+export class ResponseUserDTO extends BaseDTO {
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
 }

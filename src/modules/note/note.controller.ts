@@ -28,7 +28,7 @@ export class NoteController {
   constructor(private readonly noteService: NoteService) {}
 
   @Get('/')
-  @UseGuards(AuthGuard())
+  // @UseGuards(AuthGuard())
   @ApiOkResponse({ type: ResponseNoteDTO, isArray: true })
   @ApiOperation({ title: 'Get all notes' })
   @ApiImplicitQuery({

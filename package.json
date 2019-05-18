@@ -24,6 +24,7 @@
   "dependencies": {
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
+    "@nestjs/jwt": "^6.1.0",
     "@nestjs/passport": "^6.1.0",
     "@nestjs/platform-express": "^6.0.0",
     "@nestjs/swagger": "^3.0.2",
@@ -32,8 +33,10 @@
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
     "dotenv": "^8.0.0",
+    "jsonwebtoken": "^8.5.1",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.0",
     "pg": "^7.10.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",

@@ -2,7 +2,8 @@ import { Injectable, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDTO, UpdateUserDTO } from './user.dto';
+import { CreateUserDTO, UpdateUserDTO, ResponseUserDTO } from './user.dto';
+import { LoginDTO } from '../auth/auth.dto';
 
 @Injectable()
 export class UserService {
@@ -10,6 +11,23 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+
+  async findByPayload(dto: LoginDTO) {
+    const { email } = dto;
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    if (dto.password !== user.password) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    return this.sanitizeUser(user);
+  }
 
   async findAll() {
     return await this.userRepository.find();
@@ -20,7 +38,22 @@ export class UserService {
   }
 
   async create(dto: CreateUserDTO) {
-    return await this.userRepository.save(dto);
+    const { email } = dto;
+    const user = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    if (user) {
+      const errors = { username: 'User already exists.' };
+      throw new HttpException(
+        { message: 'Input data validation failed', errors },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // TODO: encrypt password
+    const createdUser = await this.userRepository.save(dto);
+    return this.sanitizeUser(createdUser);
   }
 
   async update(id: number, dto: UpdateUserDTO) {
@@ -38,5 +71,10 @@ export class UserService {
 
   async delete(id: number) {
     return await this.userRepository.delete(id);
+  }
+
+  sanitizeUser(user) {
+    const { password, ...sanitized } = user;
+    return sanitized;
   }
 }
