@@ -3,15 +3,31 @@ import { INestApplication, HttpStatus } from '@nestjs/common';
 import testingTools from './utils';
 import { Group } from '../modules/group/group.entity';
 import { CreateGroupDTO } from '../modules/group/group.dto';
+import { CreateUserDTO } from 'src/modules/user/user.dto';
 
 describe('Group API', () => {
   let app: INestApplication;
+  let bearer: string;
 
   beforeAll(async done => {
     await testingTools.dropDatabase();
     await testingTools.loadFixtures([Group]);
 
     app = await testingTools.createApp();
+
+    const user: CreateUserDTO = {
+      email: 'username@host.com',
+      password: 'password',
+      firstName: 'John',
+      lastName: 'Doe',
+    };
+    await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(user)
+      .expect(HttpStatus.CREATED)
+      .expect(({ body }) => {
+        ({ token: bearer } = body);
+      });
     done();
   });
 

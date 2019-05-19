@@ -5,9 +5,11 @@ import { Note } from '../modules/note/note.entity';
 import { Group } from '../modules/group/group.entity';
 import { CreateNoteDTO } from '../modules/note/note.dto';
 import { Tag } from '../modules/tag/tag.entity';
+import { CreateUserDTO } from 'src/modules/user/user.dto';
 
 describe('Note API', () => {
   let app: INestApplication;
+  let token: string;
 
   beforeAll(async done => {
     await testingTools.dropDatabase();
@@ -15,6 +17,14 @@ describe('Note API', () => {
     await testingTools.loadFixtures([Note]);
     await testingTools.loadFixtures([Tag]);
     await testingTools.loadFixtures([{ name: 'Tag-Notes-Relation' }]);
+
+    const user: CreateUserDTO = {
+      email: 'username@host.com',
+      password: 'password',
+      firstName: 'John',
+      lastName: 'Doe',
+    };
+    token = await testingTools.register(user);
 
     app = await testingTools.createApp();
     done();
@@ -26,9 +36,16 @@ describe('Note API', () => {
   });
 
   describe('get notes', () => {
+    it('should reject because of authorization', async () => {
+      return request(app.getHttpServer())
+        .get('/notes')
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
     it('should successfully get all notes', async () => {
       return request(app.getHttpServer())
         .get('/notes')
+        .set('Authorization', `Bearer ${token}`)
         .expect(HttpStatus.OK)
         .expect(({ body }) => {
           expect(body.length).toEqual(6);
@@ -42,6 +59,7 @@ describe('Note API', () => {
     it('should successfully get all notes with tags', async () => {
       return request(app.getHttpServer())
         .get('/notes?expand=tags')
+        .set('Authorization', `Bearer ${token}`)
         .expect(HttpStatus.OK)
         .expect(({ body }) => {
           expect(body).toHaveLength(6);
@@ -58,6 +76,7 @@ describe('Note API', () => {
     it('should successfully get all notes with groups', async () => {
       return request(app.getHttpServer())
         .get('/notes?expand=group')
+        .set('Authorization', `Bearer ${token}`)
         .expect(HttpStatus.OK)
         .expect(({ body }) => {
           expect(body.length).toEqual(6);
@@ -69,6 +88,7 @@ describe('Note API', () => {
     it('should successfully get specific note by id', async () => {
       return request(app.getHttpServer())
         .get('/notes/2')
+        .set('Authorization', `Bearer ${token}`)
         .expect(HttpStatus.OK)
         .expect(({ body }) => {
           expect(body).toBeDefined();
@@ -89,6 +109,7 @@ describe('Note API', () => {
 
       return request(app.getHttpServer())
         .post('/notes')
+        .set('Authorization', `Bearer ${token}`)
         .send(dto)
         .expect(HttpStatus.CREATED)
         .expect(({ body }) => {
@@ -106,6 +127,7 @@ describe('Note API', () => {
 
       return request(app.getHttpServer())
         .post('/notes')
+        .set('Authorization', `Bearer ${token}`)
         .send(dto)
         .expect(HttpStatus.BAD_REQUEST)
         .expect(({ body }) => {
@@ -126,6 +148,7 @@ describe('Note API', () => {
 
       return request(app.getHttpServer())
         .put(`/notes/${dto.id}`)
+        .set('Authorization', `Bearer ${token}`)
         .send({ title: dto.title })
         .expect(HttpStatus.OK)
         .expect(({ body }) => {
@@ -139,11 +162,13 @@ describe('Note API', () => {
     it('should successfully delete specific note', async () => {
       return request(app.getHttpServer())
         .delete('/notes/1')
+        .set('Authorization', `Bearer ${token}`)
         .expect(HttpStatus.OK);
     });
     it('should delete undefined note without errors', async () => {
       return request(app.getHttpServer())
         .delete('/notes/99')
+        .set('Authorization', `Bearer ${token}`)
         .expect(HttpStatus.OK);
     });
   });
@@ -157,6 +182,7 @@ describe('Note API', () => {
       it('should add tag to note', async () => {
         return request(app.getHttpServer())
           .post('/notes/2/tag')
+          .set('Authorization', `Bearer ${token}`)
           .send(tag1)
           .expect(HttpStatus.CREATED)
           .expect(({ body }) => {
@@ -169,6 +195,7 @@ describe('Note API', () => {
       it('should add second tag to note', async () => {
         return request(app.getHttpServer())
           .post('/notes/2/tag')
+          .set('Authorization', `Bearer ${token}`)
           .send(tag2)
           .expect(HttpStatus.CREATED)
           .expect(({ body }) => {
@@ -183,11 +210,13 @@ describe('Note API', () => {
       it('should add dublicate tag to note', async () => {
         await request(app.getHttpServer())
           .post('/notes/2/tag')
+          .set('Authorization', `Bearer ${token}`)
           .send(tag3)
           .expect(HttpStatus.CREATED);
 
         return request(app.getHttpServer())
           .post('/notes/2/tag')
+          .set('Authorization', `Bearer ${token}`)
           .send(tag3)
           .expect(HttpStatus.CREATED)
           .expect(({ body }) => {
@@ -203,11 +232,13 @@ describe('Note API', () => {
       it('should delete tag from note', async () => {
         await request(app.getHttpServer())
           .post('/notes/2/tag')
+          .set('Authorization', `Bearer ${token}`)
           .send(tag3)
           .expect(HttpStatus.CREATED);
 
         await request(app.getHttpServer())
           .get('/notes/2')
+          .set('Authorization', `Bearer ${token}`)
           .expect(HttpStatus.OK)
           .expect(({ body }) => {
             expect(
@@ -217,6 +248,7 @@ describe('Note API', () => {
 
         return request(app.getHttpServer())
           .delete('/notes/2/tag')
+          .set('Authorization', `Bearer ${token}`)
           .send(tag3)
           .expect(HttpStatus.OK)
           .expect(({ body }) => {

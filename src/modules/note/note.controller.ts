@@ -24,11 +24,11 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('notes')
 @ApiUseTags('Notes')
+@UseGuards(AuthGuard())
 export class NoteController {
   constructor(private readonly noteService: NoteService) {}
 
   @Get('/')
-  // @UseGuards(AuthGuard())
   @ApiOkResponse({ type: ResponseNoteDTO, isArray: true })
   @ApiOperation({ title: 'Get all notes' })
   @ApiImplicitQuery({

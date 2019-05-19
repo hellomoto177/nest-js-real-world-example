@@ -1,9 +1,11 @@
 import { createConnection } from 'typeorm';
+import * as request from 'supertest';
 import * as fs from 'fs';
 import * as path from 'path';
 import { TestingModule, Test } from '@nestjs/testing';
 import { AppModule } from '../app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { CreateUserDTO } from 'src/modules/user/user.dto';
 
 if (process.env.NODE_ENV !== 'test')
   throw new Error("Using NODE_ENV other than 'test' is DAMNED DANGEROUS!");
@@ -21,6 +23,29 @@ export default class TestingTools {
     await app.useGlobalPipes(new ValidationPipe()).init();
 
     return app;
+  }
+
+  /**
+   * Registers new user and returns token
+   */
+  static async register(user: CreateUserDTO) {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    let token: string;
+
+    const app = await module.createNestApplication();
+    await app.useGlobalPipes(new ValidationPipe()).init();
+    await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(user)
+      .expect(({ body }) => {
+        ({ token } = body);
+      });
+    await app.close();
+
+    return token;
   }
 
   /**
