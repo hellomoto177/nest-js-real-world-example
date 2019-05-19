@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, CacheModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,10 +8,12 @@ import { TagModule } from './modules/tag/tag.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from './modules/config/config.module';
+import { ConfigService } from './modules/config/config.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(), // Get config from configService
+    CacheModule.register(),
+    TypeOrmModule.forRoot(),
     GroupModule,
     NoteModule,
     TagModule,

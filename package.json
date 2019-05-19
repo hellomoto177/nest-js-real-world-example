@@ -30,6 +30,7 @@
     "@nestjs/swagger": "^3.0.2",
     "@nestjs/typeorm": "^6.1.0",
     "@types/swagger-ui-express": "^3.0.0",
+    "cache-manager": "^2.9.0",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
     "dotenv": "^8.0.0",

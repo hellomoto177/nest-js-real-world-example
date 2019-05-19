@@ -8,6 +8,8 @@ import {
   Delete,
   Put,
   UseGuards,
+  UseInterceptors,
+  CacheInterceptor,
 } from '@nestjs/common';
 import { NoteService } from './note.service';
 import {
@@ -25,6 +27,7 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller('notes')
 @ApiUseTags('Notes')
 @UseGuards(AuthGuard())
+// @UseInterceptors(CacheInterceptor)
 export class NoteController {
   constructor(private readonly noteService: NoteService) {}
 
