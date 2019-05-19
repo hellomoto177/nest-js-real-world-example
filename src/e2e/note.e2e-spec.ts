@@ -18,13 +18,7 @@ describe('Note API', () => {
     await testingTools.loadFixtures([Tag]);
     await testingTools.loadFixtures([{ name: 'Tag-Notes-Relation' }]);
 
-    const user: CreateUserDTO = {
-      email: 'username@host.com',
-      password: 'password',
-      firstName: 'John',
-      lastName: 'Doe',
-    };
-    token = await testingTools.register(user);
+    token = await testingTools.register();
 
     app = await testingTools.createApp();
     done();

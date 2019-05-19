@@ -7,6 +7,7 @@ import {
   Delete,
   Query,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import {
@@ -18,8 +19,10 @@ import {
 } from '@nestjs/swagger';
 import { ResponseTagDTO, CreateTagDTO, UpdateTagDTO } from './tag.dto';
 import { DeleteResult } from 'typeorm';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('tags')
+@UseGuards(AuthGuard())
 @ApiUseTags('Tags')
 export class TagController {
   constructor(private readonly tagService: TagService) {}

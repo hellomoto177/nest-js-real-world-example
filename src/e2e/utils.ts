@@ -28,10 +28,23 @@ export default class TestingTools {
   /**
    * Registers new user and returns token
    */
-  static async register(user: CreateUserDTO) {
+  static async register(user?: CreateUserDTO) {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
+
+    let account: CreateUserDTO;
+
+    if (!user) {
+      account = {
+        email: 'username@host.com',
+        password: 'password',
+        firstName: 'John',
+        lastName: 'Doe',
+      };
+    } else {
+      account = user;
+    }
 
     let token: string;
 
@@ -39,7 +52,7 @@ export default class TestingTools {
     await app.useGlobalPipes(new ValidationPipe()).init();
     await request(app.getHttpServer())
       .post('/auth/register')
-      .send(user)
+      .send(account)
       .expect(({ body }) => {
         ({ token } = body);
       });
