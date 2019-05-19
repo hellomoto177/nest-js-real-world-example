@@ -4,9 +4,14 @@ import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
+import { ConfigModule } from '../config/config.module';
 
 @Module({
-  imports: [PassportModule.register({ defaultStrategy: 'jwt' }), UserModule],
+  imports: [
+    ConfigModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    UserModule,
+  ],
   providers: [AuthService, JwtStrategy],
   exports: [PassportModule, AuthService],
   controllers: [AuthController],

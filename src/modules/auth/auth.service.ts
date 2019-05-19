@@ -2,15 +2,16 @@ import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import { UserService } from '../user/user.service';
 import { ResponseUserDTO } from '../user/user.dto';
+import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly configService: ConfigService,
+  ) {}
 
   signPayload(user: ResponseUserDTO) {
-    // TODO: take it from config service
-    const expiresIn = 3600;
-
     const accessToken = jwt.sign(
       {
         id: user.id,
@@ -20,8 +21,8 @@ export class AuthService {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
-      'ItIsNotASecret',
-      { expiresIn },
+      this.configService.authSecret,
+      { expiresIn: this.configService.authTokenExpires },
     );
 
     return accessToken;
